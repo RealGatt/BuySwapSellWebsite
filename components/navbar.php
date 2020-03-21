@@ -61,7 +61,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark primary-color">
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="/">Buy/Swap/Sell</a>
+    <a class="navbar-brand" href="/"><img src="assets/images/favicon.png" style="width:32px; height:32px;" alt="Book Trader"></a>
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicNav"
