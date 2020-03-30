@@ -1,49 +1,68 @@
 <?php
 
+include_once("userapi.php");
+
+
 class ItemStatus{
     const SOLD = "Sold";
     const ACCEPTING_OFFERS = "Accepting Offers";
     const DELETED = "Deleted";
     const PAUSED = "Paused";
-    const ONHOLD = "On Hold";
+    const ON_HOLD = "On Hold";
+
+    
+
 }
 
+function getStatusFromString($input){
+    switch ($input){
+        case "SOLD":
+            return ItemStatus::SOLD;
+        case "ACCEPTING_OFFERS":
+            return ItemStatus::ACCEPTING_OFFERS;
+        case "DELETED":
+            return ItemStatus::DELETED;
+        case "PAUSED":
+            return ItemStatus::PAUSED;
+        case "ON_HOLD":
+            return ItemStatus::ON_HOLD;
+        default:
+            return "UNKNOWN";
+    }
+}
 
 function getItemsWithState(string $state){
-    // do MYSQL stuff
-
+    
     $items = array();
+    if (isset($state)){
 
-    array_push($items, 
-            new Item(1, 1, "A Cool Book", 
-            "This book is required for Class XYZ",
-            "60$ or a cup of really good coffee",
-            ItemStatus::ACCEPTING_OFFERS, 
-            ItemCondition::BRAND_NEW,
-            array("itech3801"), array("8d8f8s.png")),
+        $conn = new mysqli("localhost:3306", DB_USER, DB_PASSWORD, DB_DATABASE);
+        
+        // prepare a new statement - stops sql injection
+        $stmt = $conn->prepare("SELECT * from book WHERE itemStatus=?;");
+        $stmt->bind_param("s", $state);
+        
+        $stmt->execute();
 
-            new Item(1, 2, "Marshmallow", 
-            "A yummy Marshwallow",
-            "Ham Sandwich",
-            ItemStatus::ACCEPTING_OFFERS, 
-            ItemCondition::TOASTED,
-            array("marsh1001"), array("mallow.png")),
+        $result = $stmt->get_result();
+        
+        mysqli_close($conn);
+        
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				if ($row['itemStatus'] == $state){
+                    $itm = new Item($row["user_id"], $row["id"], $row["title"], 
+                    $row["description"], $row["seeking"], $row["itemStatus"], $row["itemCondition"], 
+                    explode(",", $row["relevantCourse"]), explode(",", $row["pictures"]));
+                    
 
-            new Item(1, 3, "Useless Book", 
-            "This book is required for Class ZYX, but you'll never use it. Like usual.",
-            "Please just take it off my hands.",
-            ItemStatus::ACCEPTING_OFFERS, 
-            ItemCondition::USED,
-            array("itech3801"), array("99222.png")),
-
-            new Item(1, 4, "Lenovo Laptop", 
-            "It's a laptop",
-            "Thanos' Head",
-            ItemStatus::ACCEPTING_OFFERS, 
-            ItemCondition::USED,
-            array("itech3801"), array("515.png")));
-
-    return $items;
+                    array_push($items, $itm);
+				}
+			}
+        }
+    }
+    
+	return $items;
 
 }
 

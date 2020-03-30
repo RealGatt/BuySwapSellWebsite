@@ -4,12 +4,12 @@ include_once("./api/itemapi.php");
 include_once("./api/userapi.php");
 
 if (!isset($initialItems) || is_null($initialItems)){
-    $initialItems = getItemsWithState(ItemStatus::ACCEPTING_OFFERS); // everything from db that is active.
+    $initialItems = getItemsWithState("ACCEPTING_OFFERS"); // everything from db that is active.
 }
 
 ?>
 
-<table id="dataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="itemTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th class="th-sm">Name
@@ -44,7 +44,7 @@ if (!isset($initialItems) || is_null($initialItems)){
                 <td><?=$item->ITEM_DESC?></td>
                 <td><?=$item->SEEKING?></td>
                 <td><?=$item->ITEM_CONDITION?></td>
-                <td><?=$item->ITEM_STATUS?></td>
+                <td><?=getStatusFromString( $item->ITEM_STATUS )?></td>
                 <td><?=strtoupper(implode(", ", $item->RELEVANT_COURSE_CODES))?></td>
                 <td><?=$user->USER_NAME?></td>
                 <td><?=$user->USER_LOCATION?></td>
@@ -82,7 +82,7 @@ if (!isset($initialItems) || is_null($initialItems)){
 
 <script>
     $(document).ready(function () {
-        $('#dtBasicExample').DataTable();
+        $('#itemTable').DataTable();
         $('.dataTables_length').addClass('bs-select');
     });
 </script>

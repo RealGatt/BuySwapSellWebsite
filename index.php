@@ -8,9 +8,9 @@ include_once("components/header.php");
     include_once("components/navbar.php");?>
     <div class="container">
 
-    <?php
-    include_once("components/itemlist.php");
-    ?>
+        <?php
+        include_once("components/itemlist.php");
+        ?>
 
     </div>
 
