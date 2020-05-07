@@ -2,12 +2,12 @@
 
 include_once("api/userapi.php");
 
-if (isset($_SESSION["notification"])){
-    ?>
+if (isset($_SESSION["notification"])) {
+?>
     <div class="alert alert-danger" role="alert">
-        <?=$_SESSION["notification"]?>
+        <?= $_SESSION["notification"] ?>
     </div>
-    <?php
+<?php
     $_SESSION["notification"] = null;
 }
 

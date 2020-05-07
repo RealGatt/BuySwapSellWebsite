@@ -1,6 +1,6 @@
 <head>
-    <title>Book Trade - <?=$title?></title>
-    
+    <title>Book Trade - <?= $title ?></title>
+
     <link rel="shortcut icon" href="assets/images/favicon.png">
 
     <!-- Font Awesome -->
@@ -20,7 +20,7 @@
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.14.1/js/mdb.min.js"></script>
 
-    
+
     <link href="assets/css/datatables.min.css" rel="stylesheet">
     <script type="text/javascript" src="assets/js/datatables.min.js"></script>
 

@@ -6,9 +6,9 @@ if (!isset($_SESSION)){
 	session_start();
 }
 
-DEFINE("DB_DATABASE", ##);
-DEFINE("DB_USER", ##);
-DEFINE("DB_PASSWORD", ##); // super dooper unsecure, but meh.
+DEFINE("DB_DATABASE", "itech3108-zgatt");
+DEFINE("DB_USER", "itech3108");
+DEFINE("DB_PASSWORD", "itech3108"); // super dooper unsecure, but meh.
 
 class User{
 
@@ -49,6 +49,10 @@ function getAllUsers(){
 function getUserForID($id){
     if (isset($id)){
 
+        if ($id == -1){
+            return new User("Unknown User", "unknown", "Unknown User");
+        }
+
         $conn = new mysqli("localhost:3306", DB_USER, DB_PASSWORD, DB_DATABASE);
         
         // prepare a new statement - stops sql injection
@@ -64,7 +68,9 @@ function getUserForID($id){
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
 				if ($row['id'] == $id){
-                    $usr = new User($row["name"], $row["email"], $row["location"]);
+                    $usr = new User(strip_unsafe($row["name"]), 
+                    strip_unsafe($row["email"]), 
+                    strip_unsafe($row["location"]));
 
                     $usr->USER_ID = $row["id"];
                     $usr->USER_HASHEDPASSWORD = $row["password"]; // create new user instance to return
@@ -74,9 +80,9 @@ function getUserForID($id){
 			}
         }
         
-		return null;
+        return new User("Unknown User", "unknown", "Unknown User");
 	}
-	return null;
+    return new User("Unknown User", "unknown", "Unknown User");
 }
 
 function getUser($email=null){
@@ -99,7 +105,9 @@ function getUser($email=null){
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
 				if ($row['email'] == $email){
-                    $usr = new User($row["name"], $row["email"], $row["location"]);
+                    $usr = new User(strip_unsafe($row["name"]), 
+                    strip_unsafe($row["email"]), 
+                    strip_unsafe($row["location"]));
 
                     $usr->USER_ID = $row["id"];
                     $usr->USER_HASHEDPASSWORD = $row["password"]; // create new user instance to return
@@ -125,8 +133,8 @@ function userExists($email=null){
 function createUser($fullname=null, $password=null, $email=null, $location=null){
 	if (isset($fullname) && isset($password) && isset($email) && isset($location)){
 		if (!userExists($email)){
-			if (strlen($password) <= 5){
-				return "ERROR: Password too short. Passwords have to be at least 6 characters";
+			if (strlen($password) <= 4){
+				return "ERROR: Password too short. Passwords have to be at least 5 characters";
             }
                         
             $fullname = strip_unsafe($fullname);
@@ -174,5 +182,3 @@ function attemptLogin($email, $password){
 function isLoggedIn(){
     return isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"];
 }
-
-?>

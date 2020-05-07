@@ -18,32 +18,6 @@ function replace_links( $text )
 	return $ret;
 }
 
-function sendEmail($from, $fromName, $toAddress, $toName, $subject, $body){
-	require("phpmailer/class.phpmailer.php");
-
-	$mail = new PHPMailer();
-							  // set mailer to use SMTP
-	#$mail->Host = "
-	#$mail->SMTPAuth = 
-	#$mail->Username = "
-	#$mail->Password = "
-
-	$mail->From = "$from";
-	$mail->FromName = "$fromName";
-	$mail->AddAddress($to, $toName);
-
-	$mail->WordWrap = 50;								 // set word wrap to 50 characters
-	$mail->IsHTML(true);								  // set email format to HTML
-
-	$mail->Subject = "$subject";
-
-	$head = '';
-	$mail->Body	= "$body";
-	$mail->AltBody = strip_tags($body);
-
-	return $mail->Send();
-}
-
 function str_contains($haystack, $needle, $ignoreCase = false) {
 	if ($ignoreCase) {
 		$haystack = strtolower($haystack);
@@ -120,5 +94,3 @@ function clean($val){
 	$val = str_replace('"', "", $val);
 	return $val;
 }
-
-?>
