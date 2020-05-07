@@ -15,8 +15,10 @@ if (isset($_POST["submit"])){
     $newOffer = new ItemOffer(-1, $slr->USER_ID, $itemID, strip_unsafe($_POST['offer']), 0, time());
 
     if ($newOffer->saveToDatabase()){
+        $_SESSION["notification"] = "Offer successfully submitted";
         header("Location: /item.php?id=".$itemID."&offerid=".$newOffer->OFFER_ID);
     }else{
+        $_SESSION["notification"] = "Something went wrong when submitting your offer. Try again.";
         echo "Error while submitting your offer. Try again?";
     }
     return;
@@ -34,6 +36,7 @@ if (isset($_POST["accept"])){
         $itemInstance->ITEM_STATUS = getStatusFromString("SOLD");
         $offerObj->saveToDatabase();
         $itemInstance->saveToDatabase();
+        $_SESSION["notification"] = "Offer has been accepted!";
         header("Location: /item.php?id=".$offerObj->BOOK_ID."&offerid=".$offerObj->OFFER_ID);
         return;
     }
@@ -48,6 +51,7 @@ $item = $_GET["id"];
 
 $itemInstance = getItemFromId($item);
 if ($itemInstance == null) {
+    $_SESSION["notification"] = "Couldn't find the requested Item";
     header("Location: /");
 }
 

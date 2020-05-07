@@ -9,6 +9,7 @@ function sendMessage($SENDER, $OFFER, $MSG){
     $msgInstance->SENDER = $SENDER;
     $msgInstance->OFFER_ID = $OFFER;
     $msgInstance->MESSAGE = $MSG;
+    $_SESSION["notification"] = "Successfully send message";
     return $msgInstance->saveToDatabase();
 }
 

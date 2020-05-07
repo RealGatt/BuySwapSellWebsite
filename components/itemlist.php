@@ -5,6 +5,8 @@ include_once("./api/userapi.php");
 
 if (!isset($initialItems) || is_null($initialItems)) {
     $initialItems = getItemsWithState("ACCEPTING_OFFERS"); // everything from db that is active.
+
+    $initialItems = array_merge(getItemsWithState("SOLD"), $initialItems);
 }
 
 ?>
@@ -42,8 +44,7 @@ if (!isset($initialItems) || is_null($initialItems)) {
 
         <?php
         foreach ($initialItems as $item) {
-            $user = getUserForID($item->SELLER_ID);
-        ?>
+            $user = getUserForID($item->SELLER_ID);?>
             <tr>
                 <td><?= $item->ITEM_NAME ?></td>
                 <td><?= $item->ITEM_DESC ?></td>
@@ -86,9 +87,17 @@ if (!isset($initialItems) || is_null($initialItems)) {
     </tfoot>
 </table>
 
-<script>
-    $(document).ready(function() {
-        $('#itemTable').DataTable();
-        $('.dataTables_length').addClass('bs-select');
-    });
-</script>
+<?php
+$enableItemTable = false;
+
+if ($enableItemTable){
+    ?>
+    <script>
+        $(document).ready(function() {
+            $('#itemTable').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+    <?php
+}
+?>

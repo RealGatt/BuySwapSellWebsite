@@ -40,6 +40,7 @@ include_once("components/header.php");
 <body>
     <?php include_once("components/navbar.php"); ?>
 
+    <?php include_once("components/notification.php"); ?>
     <div class="container" id="itemContainer">
         <div class="container my-5 py-5 z-depth-1">
 
